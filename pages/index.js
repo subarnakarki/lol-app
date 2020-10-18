@@ -4,7 +4,7 @@ import { useState}  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Link from 'next/link';
+import { useRouter} from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,20 +12,22 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: '25ch',
     },
-  },
-  inline: {
-    display: 'inline-block'
   }
 }));
 
 export default function Home() {
+  const router = useRouter()
   const classes = useStyles();
   const [summonerName, setSummonerName] = useState('');
 
   const handleChange = (event) => {
     setSummonerName(event.target.value);
   }
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    router.push(`/summoner?name=${summonerName}`, `/summoner/${summonerName}`);
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -40,12 +42,10 @@ export default function Home() {
           League Summoner Search
         </h1>
 
-        <form className={classes.root} noValidate autoComplete="off">
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <TextField id="outlined-basic" variant="outlined" helperText="Enter Summoner Name" value={summonerName} onChange={handleChange}/>
-          <div className={classes.root}>
-            <Link href="/summoner">
-              <Button size="large" variant="contained">Search</Button>
-            </Link>
+          <div >
+            <Button type="submit" size="large" variant="contained">Search</Button>
           </div>
         </form>
       </main>

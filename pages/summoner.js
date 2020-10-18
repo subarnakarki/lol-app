@@ -2,8 +2,8 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useState}  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+// import { withRouter } from 'next/router'
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,20 +11,20 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: '25ch',
     },
+    profileIcon: {
+      height: '128px',
+      height: '128px'
+    }
   },
-  inline: {
-    display: 'inline-block'
+  profileIcon: {
+    height: '128px',
+    height: '128px'
   }
 }));
 
-export default function Home() {
-  const classes = useStyles();
-  const [summonerName, setSummonerName] = useState('');
-
-  const handleChange = (event) => {
-    setSummonerName(event.target.value);
-  }
-  
+const Summoner = (props) => {
+  const classes = useStyles()
+  // console.log('PROPS ARE', props)
   return (
     <div className={styles.container}>
       <Head>
@@ -35,9 +35,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Summoner Page
-        </h1>
+        <h1 className={styles.title}>{ props.name }</h1>
+        <h2>Level: {props.summonerLevel}</h2>
+        <img className={classes.profileIcon} src={`http://ddragon.leagueoflegends.com/cdn/10.21.1/img/profileicon/${props.profileIconId}.png`}></img>
       </main>
 
       <footer className={styles.footer}>
@@ -45,4 +45,16 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export default Summoner;
+
+Summoner.getInitialProps = async ({query}) => {
+  const summonerV4 = await axios.get(`http://localhost:3000/api/summonerV4`, {
+    params: {
+      name: query.name
+    }
+  });
+  const summoner = summonerV4.data
+  return {...summoner, };
 }

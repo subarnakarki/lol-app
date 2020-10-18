@@ -2,14 +2,23 @@
   "name": "lol-app",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Subarna Karki",
+    "email": "subarna.karki13@gmail.com"
+  },
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.10.0",
+    "axios": "^0.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "next": "9.5.5",
     "react": "16.14.0",
     "react-dom": "16.14.0"
