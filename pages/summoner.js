@@ -2,8 +2,12 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import {data} from '../champion.json';
 
 const useStyles = makeStyles((theme) => ({
+  text: {
+    textAlign: 'center',
+  },
   root: {
     '& > *': {
       margin: theme.spacing(1),
@@ -16,17 +20,35 @@ const useStyles = makeStyles((theme) => ({
   },
   profileIcon: {
     height: '128px',
-    height: '128px'
+  },
+  champIcon: {
+    height: '100px',
+    display: 'block',
+    'margin-left': 'auto',
+    'margin-right': 'auto'
   },
   inline: {
     display: 'inline-block',
     padding: '30px'
   }
 }));
-
+const getChampion = (key) => {
+  for (let champ in data) {
+    const champData = data[champ];
+    if(champData.key == key) {
+      return data[champ]
+    }
+  }
+}
+const version = '12.8.1';
 const Summoner = (props) => {
+  console.log(props)
   const classes = useStyles()
-  console.log('PROPS ARE', props)
+  const topChampions = {
+    one: props.mastery[0].championId,
+    two: props.mastery[1].championId,
+    three: props.mastery[2].championId
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -39,22 +61,25 @@ const Summoner = (props) => {
       <main className={styles.main}>
         <h1 className={styles.title}>{ props.name }</h1>
         <h2>Level: {props.summonerLevel}</h2>
-        <img className={classes.profileIcon} src={`http://ddragon.leagueoflegends.com/cdn/10.21.1/img/profileicon/${props.profileIconId}.png`}></img>
+        <img className={classes.profileIcon} src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${props.profileIconId}.png`}></img>
         <div>
           <div className={classes.inline}>
-            <h3>Favorite champion 1</h3>
-            <p>Champion ID:  {props.mastery[0].championId} </p>
-            <p>Mastery Points: {props.mastery[0].championPointsSinceLastLevel} </p>
+            <img className={classes.champIcon} src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${getChampion(topChampions.one).id}.png`}></img>
+            {/* <img className={classes.champIcon} src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${getChampion(topChampions.one)}.png`}></img> */}
+            <h3 className={classes.text}>{getChampion(topChampions.one).name}</h3>
+            <p className={classes.text}>Mastery Points: {props.mastery[0].championPointsSinceLastLevel} </p>
           </div>
           <div className={classes.inline}>
-            <h3>Favorite champion</h3>
-            <p>Champion ID: {props.mastery[1].championId} </p>
-            <p>Mastery Points: {props.mastery[1].championPointsSinceLastLevel} </p>
+            <img className={classes.champIcon} src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${getChampion(topChampions.two).id}.png`}></img>
+            {/* <img className={classes.champIcon} src={`http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${getChampion(topChampions.two)}_1.jpg`}></img> */}
+            <h3 className={classes.text}>{getChampion(topChampions.two).name}</h3>
+            <p className={classes.text}>Mastery Points: {props.mastery[1].championPointsSinceLastLevel} </p>
           </div>
           <div className={classes.inline}>
-            <h3>Favorite champion</h3>
-            <p>Champion ID:  {props.mastery[2].championId} </p>
-            <p>Mastery Points: {props.mastery[2].championPointsSinceLastLevel} </p>
+            <img className={classes.champIcon} src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${getChampion(topChampions.three).id}.png`}></img>
+            {/* <img className={classes.champIcon} src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${getChampion(topChampions.three)}.png`}></img> */}
+            <h3 className={classes.text}>{getChampion(topChampions.three).name}</h3>
+            <p className={classes.text}>Mastery Points: {props.mastery[2].championPointsSinceLastLevel} </p>
           </div>
         </div>
       </main>
